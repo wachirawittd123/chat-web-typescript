@@ -20,6 +20,6 @@
     "strictPropertyInitialization": false,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "crypto-example/example.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "postcss.config.ts", "tailwind.config.ts"],
   "exclude": ["node_modules"]
 }

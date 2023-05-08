@@ -1,9 +1,17 @@
+const { join } = require("path")
 /** @type {import('tailwindcss').Config} */
+
+
 module.exports = {
   mode: 'jit',
-  purge: ['./src/**/*.{js,ts,jsx,tsx}'],
+  purge: ['./client/**/*.{js,ts,jsx,tsx}'],
   darkMode: false,
   theme: {},
   variants: {},
-  plugins: [],
+  plugins: [require("tailwindcss"), require("autoprefixer")],
+  content: [
+    join(__dirname, '**/*.{js,ts,jsx,tsx}'),
+    './client/pages/**/*.{html,js}',
+    './components/**/*.{html,js}',
+  ],
 }
