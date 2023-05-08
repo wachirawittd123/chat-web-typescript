@@ -1,6 +1,35 @@
-import Image from 'next/image'
+import axios from "axios";
+import Router from "next/router";
+import { useCallback } from "react";
+import ToastMessage from "../components/toast";
 
 const LoginPage = () => {
+
+    const notify = useCallback((type, message) => {
+        ToastMessage({ type, message })
+    }, [])
+
+    const _Submit = async(e) => {
+        e.preventDefault();
+        try {
+            const result = await axios({
+                method: "post",
+                url: `/api/auth/login`,
+                data: {
+                    email: e.target.elements.email?.value,
+                    password: e.target.elements.password?.value
+                }
+            })
+            if(result?.data?.result?.uid) {
+                notify("success", "Login success")
+                Router.push("/")
+            }
+            return;
+        } catch (err:any) {
+            notify("error", err?.response?.data?.message.toString())
+        }
+    }
+
     return (
         <div className='h-screen flex bg-gray-bg1'>
             <div className='w-full max-w-md m-auto bg-white rounded-lg border border-primaryBorder shadow-default py-10 px-16'>
@@ -8,7 +37,7 @@ const LoginPage = () => {
                     Log in to your account 🔐
                 </h1>
 
-                <form>
+                <form onSubmit={_Submit}>
                     <div>
                         <label htmlFor='email'>Email</label>
                         <input
@@ -30,7 +59,7 @@ const LoginPage = () => {
 
                     <div className='flex justify-center items-center mt-6'>
                         <button
-                            className={`bg-green py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`}
+                            className={`bg-green py-2 px-4 text-sm rounded border border-green focus:outline-none focus:border-green-dark`}
                         >
                             Login
                         </button>

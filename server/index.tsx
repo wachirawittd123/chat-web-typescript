@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser"
 import cors from "cors"
 import bodyParser from "body-parser"
 import { NODE_ENV, PORT } from "./common/setting"
+import baseRouter from "./route"
 
 const next = require('next')
 
@@ -23,6 +24,8 @@ app
       origin: true,
       exposedHeaders: '*'
     }))
+
+    server.use(baseRouter)
 
     server.get("*", (req: express.Request, res: express.Response) => {
       return handle(req, res);
