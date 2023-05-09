@@ -1,4 +1,4 @@
-import { signInWithEmailAndPassword } from "firebase/auth"
+import { signInWithEmailAndPassword, signOut } from "firebase/auth"
 import { auth } from "../common/db"
 import { ILogin } from "../interface/user"
 
@@ -10,11 +10,13 @@ const authController = {
             .catch((error) => reject(`${error.code} : ${error.message}`));
         })
     },
-    // logout: async (IdAdmin: string) => {
-    //     const admin = await Admin.findOne({ where: { IdAdmin: IdAdmin } })
-    //     if (!admin) throw new Error("ไม่พบข้อมูลผู้ใช้งาน")
-    //     return admin.get().profile
-    // },
+    logout: async () => {
+        return new Promise((resolve, reject) => {
+            signOut(auth)
+            .then((user:any) => resolve("Logout success"))
+            .catch((error) => reject(`${error.code} : ${error.message}`));
+        })
+    },
 }
 
 export { authController }
