@@ -2,8 +2,11 @@ import axios from "axios";
 import Router from "next/router";
 import { useCallback, useState } from "react";
 import ToastMessage from "../components/toast";
+import { useForm } from 'react-hook-form'
+import { ErrorMessage } from "../components/common";
 
-const LoginPage = () => {
+const SignUpPage = () => {
+    const { register, handleSubmit, formState: { errors } } = useForm()
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     const notify = useCallback((type, message) => {
@@ -11,11 +14,10 @@ const LoginPage = () => {
     }, [])
 
     const _Submit = async(e) => {
-        e.preventDefault();
         let form = new FormData()
-        form.append("email", e.target.elements.email?.value)
-        form.append("password", e.target.elements.password?.value)
-        form.append("file", e.target.elements?.multiple_files?.files[0])
+        form.append("email", e?.email)
+        form.append("password", e?.password)
+        form.append("file", e?.multiple_files[0])
         try {
             const result = await axios({
                 method: "post",
@@ -27,7 +29,7 @@ const LoginPage = () => {
             })
             if(result?.data?.result?.uid) {
                 notify("success", "Sign up success")
-                Router.push("/login")
+                Router.push("/signin")
             }
             return;
         } catch (err:any) {
@@ -42,7 +44,7 @@ const LoginPage = () => {
                     Sign Up
                 </h1>
 
-                <form onSubmit={_Submit} id="form1">
+                <form onSubmit={handleSubmit(_Submit)} id="form1">
                     <div>
                         <label htmlFor='email'>Email</label>
                         <input
@@ -50,19 +52,23 @@ const LoginPage = () => {
                             className={`w-full p-2 text-primary border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4`}
                             id='email'
                             placeholder='Your Email'
+                            {...register("email", { required: true })}
                         />
+                        { errors?.email && <ErrorMessage message="Please enter your email?" mTop="-10px"/>}
                     </div>
-                    <div className="relative w-4/4 ">
+                    <div className="relative w-4/4 mb-4">
                         <label htmlFor='password'>Password</label>
                         <input
                             id="password"
                             type={isPasswordVisible ? "text" : "password"}
                             placeholder="Password"
                             className="w-full px-4 py-2 text-base border border-gray-300 rounded outline-none focus:ring-blue-500 focus:border-blue-500 focus:ring-1"
+                            {...register("password", { required: true })}
                         />
+                        { errors?.password && <ErrorMessage message="Please enter your password?" mTop="6px"/>}
                         <button
                             type="button"
-                            className="absolute inset-y-0 right-0 top-6 flex items-center px-2 text-gray-600"
+                            className={`absolute inset-y-0 right-0 ${errors?.password ? "top-1" : "top-6"} flex items-center px-2 text-gray-600`}
                             onClick={() => setIsPasswordVisible(!isPasswordVisible)}
                         >
                             {isPasswordVisible ? (
@@ -104,7 +110,8 @@ const LoginPage = () => {
                         </button>
                     </div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="multiple_files">Add an avatar</label>
-                    <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="multiple_files" type="file" multiple />
+                    <input {...register("multiple_files", { required: true })} className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="multiple_files" type="file" multiple />
+                    { errors?.multiple_files && <ErrorMessage message="Please upload avatar?" mTop="6px"/>}
                 </form>
                 <div className='flex justify-center items-center mt-6'>
                     <button
@@ -121,4 +128,4 @@ const LoginPage = () => {
     )
 }
 
-export default LoginPage
+export default SignUpPage

@@ -3,8 +3,11 @@ import Router from "next/router";
 import { useCallback, useState } from "react";
 import ToastMessage from "../components/toast";
 import Link from 'next/link'
+import { useForm } from "react-hook-form";
+import { ErrorMessage } from "../components/common";
 
-const LoginPage = () => {
+const SignInPage = () => {
+    const { register, handleSubmit, formState: { errors } } = useForm()
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     
     const notify = useCallback((type, message) => {
@@ -12,15 +15,13 @@ const LoginPage = () => {
     }, [])
 
     const _Submit = async(e) => {
-        e.preventDefault();
-        console.log('password=======>',e.target.elements.password?.value)
         try {
             const result = await axios({
                 method: "post",
                 url: `/api/auth/login`,
                 data: {
-                    email: e.target.elements.email?.value,
-                    password: e.target.elements.password?.value
+                    email: e?.email,
+                    password: e?.password
                 }
             })
             if(result?.data?.result?.uid) {
@@ -40,15 +41,17 @@ const LoginPage = () => {
                     Log in to your account 🔐
                 </h1>
 
-                <form onSubmit={_Submit} id="form1">
+                <form onSubmit={handleSubmit(_Submit)} id="form1">
                     <div>
                         <label htmlFor='email'>Email</label>
                         <input
                             type='email'
-                            className={`w-full p-2 text-primary border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4`}
+                            className={`w-full px-4 py-2 text-primary border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4`}
                             id='email'
-                            placeholder='Your Email'
+                            placeholder='Email'
+                            {...register("email", { required: true })}
                         />
+                        { errors?.email && <ErrorMessage message="Please enter your email?" mTop="-10px"/>}
                     </div>
                     <div className="relative w-4/4 ">
                         <label htmlFor='password'>Password</label>
@@ -57,10 +60,12 @@ const LoginPage = () => {
                             type={isPasswordVisible ? "text" : "password"}
                             placeholder="Password"
                             className="w-full px-4 py-2 text-base border border-gray-300 rounded outline-none focus:ring-blue-500 focus:border-blue-500 focus:ring-1"
+                            {...register("password", { required: true })}
                         />
+                        { errors?.password && <ErrorMessage message="Please enter your password?" mTop="6px"/>}
                         <button
                             type="button"
-                            className="absolute inset-y-0 right-0 top-6 flex items-center px-2 text-gray-600"
+                            className={`absolute inset-y-0 right-0 ${errors?.password ? "top-1" : "top-6"} flex items-center px-2 text-gray-600`}
                             onClick={() => setIsPasswordVisible(!isPasswordVisible)}
                         >
                             {isPasswordVisible ? (
@@ -114,7 +119,7 @@ const LoginPage = () => {
                 </div>
                 <div className='flex justify-center items-center mt-6'>
                     <span className="text-xs">Don {"'"}t have an account yet?</span>
-                    <Link className="text-sm font-black text-blue-500 ml-1" href="/register">
+                    <Link className="text-sm font-black text-blue-500 ml-1" href="/signup">
                         Sign up
                     </Link>
                 </div>
@@ -123,4 +128,4 @@ const LoginPage = () => {
     )
 }
 
-export default LoginPage
+export default SignInPage

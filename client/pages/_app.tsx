@@ -4,6 +4,7 @@ import { AppProps } from 'next/app'
 import { ToastContainer } from 'react-toastify';
 import 'tailwindcss/tailwind.css';
 import '../styles/globals.css'
+import '../styles/style.scss'
 import "react-toastify/dist/ReactToastify.css";
 
 export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
