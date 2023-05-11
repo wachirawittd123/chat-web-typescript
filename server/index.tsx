@@ -4,6 +4,7 @@ import cors from "cors"
 import bodyParser from "body-parser"
 import { NODE_ENV, PORT } from "./common/setting"
 import baseRouter from "./route"
+import "./common/db"
 
 const next = require('next')
 

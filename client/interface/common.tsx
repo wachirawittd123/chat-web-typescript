@@ -12,4 +12,5 @@ export interface IError {
 export interface ICookieUser {
     uid: string
     email: string
+    photoUrl: string
 }

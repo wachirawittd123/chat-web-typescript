@@ -25,7 +25,7 @@ const SignInPage = () => {
                 }
             })
             if(result?.data?.result?.uid) {
-                notify("success", "Login success")
+                notify("success", "Signin success")
                 Router.push("/")
             }
             return;

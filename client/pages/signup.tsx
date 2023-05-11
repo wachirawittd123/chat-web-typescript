@@ -17,7 +17,9 @@ const SignUpPage = () => {
         let form = new FormData()
         form.append("email", e?.email)
         form.append("password", e?.password)
+        form.append("displayName", e?.displayName)
         form.append("file", e?.multiple_files[0])
+
         try {
             const result = await axios({
                 method: "post",
@@ -108,6 +110,17 @@ const SignUpPage = () => {
                             </svg>
                             )}
                         </button>
+                    </div>
+                    <div>
+                        <label htmlFor='displayName'>Name</label>
+                        <input
+                            type='text'
+                            className={`w-full p-2 text-primary border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4`}
+                            id='displayName'
+                            placeholder='Name'
+                            {...register("displayName", { required: true })}
+                        />
+                        { errors?.displayName && <ErrorMessage message="Please enter your name?" mTop="-10px"/>}
                     </div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="multiple_files">Add an avatar</label>
                     <input {...register("multiple_files", { required: true })} className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="multiple_files" type="file" multiple />

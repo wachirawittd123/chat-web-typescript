@@ -9,7 +9,8 @@ export const setAuthCookie = (
         "user", 
         {
             uid: user?.localId,
-            email: user?.email
+            email: user?.email,
+            photoUrl: user?.photoUrl
         }, 
         {httpOnly: true}
       )

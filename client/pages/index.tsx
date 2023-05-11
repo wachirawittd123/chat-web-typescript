@@ -1,6 +1,8 @@
 import { NextPage } from 'next';
 import React from 'react';
 import { ICookieUser } from '../interface/common';
+import Sidebar from '../components/siderbar'
+import Chat from '../components/chat'
 
 export async function getServerSideProps(context: any) {
   if(context.req?.cookies?.user) {
@@ -17,10 +19,12 @@ export async function getServerSideProps(context: any) {
 }
 
 const MainPage: NextPage<ICookieUser> = (data) => {
-  console.log('data=======>',data)
   return (
-    <div>
-      test
+    <div className='home'>
+      <div className="container">
+        <Sidebar/>
+        <Chat/>
+      </div>
     </div>
   )
 }

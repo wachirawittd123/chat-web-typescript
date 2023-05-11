@@ -10,4 +10,5 @@ export interface ICreateUser {
     fileName: string
     mimetype: string
     buffer: ArrayBuffer
+    displayName: string
 }
