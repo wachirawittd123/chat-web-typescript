@@ -95,6 +95,7 @@ const Search = () => {
     setUser(null);
     setUsername("")
   };
+  
   return (
     <div className="search">
       <div className="searchForm">

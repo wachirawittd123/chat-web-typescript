@@ -26,6 +26,7 @@ const Chats = () => {
   const handleSelect = (u) => {
     dispatch({ type: "CHANGE_USER", payload: u });
   };
+  
   return (
     <div className="chats">
       {chats && Object.entries(chats)?.length > 0 && Object.entries(chats)?.sort((a:any,b:any)=>b[1]?.date - a[1]?.date).map((chat:any) => (
